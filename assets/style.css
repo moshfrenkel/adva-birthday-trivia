@@ -222,6 +222,8 @@ input[type=text]:focus { outline: none; border-color: var(--pink); }
 .ans.a1 .shape { transform: rotate(45deg); background: var(--white); border: none; }
 .ans.a2 .shape { border-radius: 50%; background: var(--white); border: none; }
 .ans.a3 .shape { background: var(--white); border: none; }
+.ans-icon { font-size: clamp(36px, 4vw, 56px); line-height: 1; flex-shrink: 0; }
+.answers.mini .ans-icon { display: none; }
 .ans.wrong { opacity: .35; }
 .ans.correct { outline: 8px solid var(--yellow); outline-offset: 4px; animation: bounce .5s; }
 @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }

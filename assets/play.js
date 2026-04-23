@@ -25,6 +25,7 @@
     err.textContent = '';
     if (!/^\d{4}$/.test(code)) { err.textContent = 'קוד משחק חייב להיות 4 ספרות'; return; }
     if (!name) { err.textContent = 'חובה שם'; return; }
+    SFX.unlock();
     myName = name;
     $('#btn-join').disabled = true;
     err.textContent = 'מתחברת...';
@@ -43,6 +44,7 @@
         if (!data || !data.type) return;
         if (data.type === 'joined') {
           $('#my-name-tag').textContent = 'שלום ' + myName + '!';
+          SFX.join();
           show('wait');
         } else if (data.type === 'question') {
           startQuestion(data);
@@ -53,10 +55,12 @@
           $('#answered-subtitle').textContent = 'ממתינות להמשך...';
           show('answered');
         } else if (data.type === 'reveal') {
+          if (data.correct) SFX.correct(); else SFX.wrong();
           showFeedback(data);
         } else if (data.type === 'final') {
           $('#final-rank').textContent = `מקום ${data.rank} מתוך ${data.total} 🎉`;
           $('#final-score').textContent = `${data.score} נקודות`;
+          SFX.fanfare();
           show('final');
         }
       }
@@ -86,8 +90,10 @@
     timerInterval = setInterval(() => {
       remaining--;
       $('#timer').textContent = remaining;
+      if (remaining > 0 && remaining <= 5) SFX.tickUrgent();
       if (remaining <= 0) {
         clearInterval(timerInterval);
+        SFX.timeout();
         // no answer submitted - just move to wait
         $('#answered-title').textContent = 'הזמן נגמר ⏰';
         $('#answered-subtitle').textContent = 'ממתינות להמשך...';

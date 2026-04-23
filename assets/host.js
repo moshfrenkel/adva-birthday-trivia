@@ -46,6 +46,8 @@
   }
 
   function startGame() {
+    SFX.unlock();
+    SFX.lobbyLoopStop();
     currentQ = -1;
     nextQuestion();
   }
@@ -66,7 +68,8 @@
     q.a.forEach((txt, i) => {
       const el = document.createElement('div');
       el.className = 'ans a' + i;
-      el.innerHTML = `<span class="shape"></span><span class="label">${txt}</span>`;
+      const icon = q.icons && q.icons[i] ? `<span class="ans-icon">${q.icons[i]}</span>` : '';
+      el.innerHTML = `<span class="shape"></span>${icon}<span class="label">${txt}</span>`;
       ans.appendChild(el);
     });
 
@@ -78,7 +81,8 @@
 
     questionStartedAt = Date.now();
     show('question');
-    net.broadcast({ type: 'question', index: currentQ, question: q.q, answers: q.a, timeMs: QUESTION_TIME_MS });
+    SFX.questionStart();
+    net.broadcast({ type: 'question', index: currentQ, question: q.q, answers: q.a, icons: q.icons||null, timeMs: QUESTION_TIME_MS });
 
     // timer
     let remaining = Math.ceil(QUESTION_TIME_MS / 1000);
@@ -87,8 +91,11 @@
     timerInterval = setInterval(() => {
       remaining--;
       $('#timer').textContent = remaining;
+      if (remaining > 0 && remaining <= 5) SFX.tickUrgent();
+      else if (remaining > 5) SFX.tick();
       if (remaining <= 0) {
         clearInterval(timerInterval);
+        SFX.timeout();
         reveal();
       }
     }, 1000);
@@ -111,11 +118,13 @@
     q.a.forEach((txt, i) => {
       const el = document.createElement('div');
       el.className = 'ans a' + i + (i === q.correct ? ' correct' : ' wrong');
-      el.innerHTML = `<span class="shape"></span><span class="label">${txt}</span>`;
+      const icon = q.icons && q.icons[i] ? `<span class="ans-icon">${q.icons[i]}</span>` : '';
+      el.innerHTML = `<span class="shape"></span>${icon}<span class="label">${txt}</span>`;
       ans.appendChild(el);
     });
 
     show('reveal');
+    SFX.reveal();
 
     // tell each player individually whether they were correct + their rank
     const ranked = getRanked();
@@ -174,6 +183,7 @@
     });
 
     show('podium');
+    SFX.fanfare();
     confettiBurst();
 
     // broadcast final to players
@@ -222,6 +232,7 @@
         const name = String(data.name || 'שחקנית').slice(0, 20);
         players.set(conn.peer, { id: conn.peer, name, score: 0, lastAnswer: null, lastTime: null });
         renderPlayers();
+        SFX.unlock(); SFX.join();
         conn.send({ type: 'joined', code });
       } else if (data.type === 'answer') {
         const p = players.get(conn.peer);
