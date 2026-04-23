@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>מנחה - טריוויה אדווה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700;900&family=Secular+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <!-- STATUS: connecting -->
+  <div id="screen-connecting" class="status">מתחבר לשרת המשחק...</div>
+
+  <!-- STATUS: lobby -->
+  <section id="screen-lobby" class="hidden">
+    <div class="host-lobby">
+      <div>
+        <div id="qr"></div>
+      </div>
+      <div class="code-box">
+        <div class="label">קוד המשחק</div>
+        <div class="code" id="game-code">----</div>
+        <div class="label" style="color:#555">סרקו את הקוד או היכנסו ל:</div>
+        <div class="url" id="game-url"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2 style="text-align:center; margin-bottom:14px;">שחקניות מחוברות: <span id="player-count">0</span></h2>
+      <div class="players-list" id="players-list"></div>
+      <div style="text-align:center; margin-top:20px;">
+        <button class="btn primary big" id="btn-start" disabled>התחל משחק</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATUS: question -->
+  <section id="screen-question" class="hidden">
+    <div class="q-head">
+      <div class="q-num">שאלה <span id="q-num">1</span> / 15</div>
+      <div class="timer" id="timer">20</div>
+      <div class="q-num">ענו: <span id="answer-count">0</span>/<span id="total-count">0</span></div>
+    </div>
+    <div class="q-text" id="q-text"></div>
+    <div class="answers" id="answers"></div>
+  </section>
+
+  <!-- STATUS: reveal -->
+  <section id="screen-reveal" class="hidden">
+    <h1 style="margin-bottom:20px">התשובה הנכונה!</h1>
+    <div class="q-text" id="reveal-text"></div>
+    <div class="answers" id="reveal-answers"></div>
+    <div style="text-align:center; margin-top:24px;">
+      <button class="btn primary" id="btn-leaderboard">הצג תוצאות</button>
+    </div>
+  </section>
+
+  <!-- STATUS: leaderboard -->
+  <section id="screen-leaderboard" class="hidden">
+    <h1>לוח תוצאות</h1>
+    <div class="leaderboard" id="leaderboard"></div>
+    <div style="text-align:center; margin-top:24px;">
+      <button class="btn primary big" id="btn-next">שאלה הבאה</button>
+    </div>
+  </section>
+
+  <!-- STATUS: podium -->
+  <section id="screen-podium" class="hidden">
+    <h1>האלופות של אדווה!</h1>
+    <div class="podium" id="podium"></div>
+    <div class="leaderboard" id="final-leaderboard"></div>
+    <div style="text-align:center; margin-top:24px;">
+      <button class="btn pink" onclick="location.reload()">משחק חדש</button>
+    </div>
+  </section>
+
+</div>
+
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="assets/questions.js"></script>
+<script src="assets/net.js"></script>
+<script src="assets/host.js"></script>
+</body>
+</html>

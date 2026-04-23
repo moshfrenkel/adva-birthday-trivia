@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<title>שחקנית - טריוויה אדווה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@700;900&family=Secular+One&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <!-- STEP 1: enter code + name -->
+  <section id="screen-join" class="landing">
+    <span class="tag">יום הולדת 10 לאדווה</span>
+    <h1>הצטרפי למשחק</h1>
+    <div class="card" style="width:100%; max-width:420px;">
+      <label style="font-weight:900; font-size:18px;">קוד המשחק (4 ספרות)</label>
+      <input type="text" id="input-code" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="0000" style="font-size:40px; text-align:center; letter-spacing:10px; margin:10px 0;">
+      <label style="font-weight:900; font-size:18px;">השם שלי</label>
+      <input type="text" id="input-name" maxlength="20" placeholder="איך קוראים לך?" style="margin:10px 0;">
+      <button class="btn primary big" id="btn-join">הצטרפי</button>
+      <div id="join-error" style="color:var(--red); font-weight:900; text-align:center; margin-top:10px;"></div>
+    </div>
+  </section>
+
+  <!-- STEP 2: waiting in lobby -->
+  <section id="screen-wait" class="hidden landing">
+    <span class="tag" id="my-name-tag">שלום!</span>
+    <h1>ממתינות<br>להתחלה...</h1>
+    <div class="status">🎉 מוכנות? מוש יתחיל עוד רגע!</div>
+  </section>
+
+  <!-- STEP 3: question (player sees only colors) -->
+  <section id="screen-q" class="hidden">
+    <div class="q-head">
+      <div class="q-num">שאלה <span id="q-num">1</span></div>
+      <div class="timer" id="timer">20</div>
+    </div>
+    <div style="text-align:center; color:white; font-size:22px; font-weight:900; margin-bottom:14px; text-shadow:2px 2px 0 var(--black);">הביטי במסך הגדול!</div>
+    <div class="answers mini" id="answers"></div>
+  </section>
+
+  <!-- STEP 4: after answering -->
+  <section id="screen-answered" class="hidden landing">
+    <h1 id="answered-title">תשובה נקלטה!</h1>
+    <div class="status" id="answered-subtitle">בהצלחה 🤞</div>
+  </section>
+
+  <!-- STEP 5: reveal feedback -->
+  <section id="screen-feedback" class="hidden landing">
+    <h1 id="feedback-title">✅ נכון!</h1>
+    <div class="status" id="feedback-score">+0 נקודות</div>
+    <div class="status" id="feedback-rank" style="font-size:22px;"></div>
+  </section>
+
+  <!-- STEP 6: final -->
+  <section id="screen-final" class="hidden landing">
+    <h1 id="final-title">סיימנו!</h1>
+    <div class="status" id="final-rank"></div>
+    <div class="status" id="final-score"></div>
+  </section>
+
+  <!-- disconnected -->
+  <section id="screen-disconnect" class="hidden landing">
+    <h1>התנתקת 😢</h1>
+    <button class="btn primary big" onclick="location.reload()">נסי שוב</button>
+  </section>
+
+</div>
+
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="assets/net.js"></script>
+<script src="assets/play.js"></script>
+</body>
+</html>
