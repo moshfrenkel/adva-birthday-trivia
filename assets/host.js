@@ -8,6 +8,21 @@
     });
   };
 
+  // Background music control
+  const bgm = document.getElementById('bgm');
+  if (bgm) bgm.volume = 0.25;
+  let bgmMuted = false;
+  function bgmPlay() { if (!bgm || bgmMuted) return; bgm.play().catch(()=>{}); }
+  function bgmPause() { if (!bgm) return; bgm.pause(); }
+  const muteBtn = document.getElementById('btn-mute');
+  if (muteBtn) muteBtn.addEventListener('click', () => {
+    bgmMuted = !bgmMuted;
+    muteBtn.textContent = bgmMuted ? '🔇' : '🎵';
+    if (bgmMuted) bgmPause(); else bgmPlay();
+  });
+  // First interaction will trigger music automatically (lobby vibe)
+  document.addEventListener('click', () => { SFX.unlock(); bgmPlay(); }, { once: true });
+
   const code = Net.makeCode();
   const playerUrl = new URL('play.html', location.href);
   playerUrl.searchParams.set('g', code);
@@ -48,6 +63,7 @@
   function startGame() {
     SFX.unlock();
     SFX.lobbyLoopStop();
+    bgmPlay();
     currentQ = -1;
     nextQuestion();
   }
@@ -182,6 +198,7 @@
       list.appendChild(row);
     });
 
+    bgmPause();
     show('podium');
     SFX.fanfare();
     confettiBurst();
