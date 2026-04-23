@@ -79,10 +79,12 @@ window.QUESTIONS = [
 ];
 
 // Scoring: max 1000 points. Lose up to 500 based on answer time.
+// Rounded to nearest 10 for readability.
 window.scoreFor = function(correct, timeMs, limitMs) {
   if (!correct) return 0;
   const frac = Math.max(0, Math.min(1, timeMs / limitMs));
-  return Math.round(1000 - frac * 500);
+  const raw = 1000 - frac * 500;
+  return Math.round(raw / 10) * 10;
 };
 
 window.QUESTION_TIME_MS = 20000;
