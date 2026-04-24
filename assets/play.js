@@ -31,13 +31,17 @@
     err.textContent = 'מתחברת...';
 
     net = Net.playerJoin(code, {
+      onStatus: (msg) => { err.textContent = msg; err.style.color = '#555'; },
       onOpen: () => {
+        err.textContent = '';
+        err.style.color = 'var(--red)';
         net.send({ type: 'join', name });
       },
       onClose: () => { show('disconnect'); },
       onError: (e) => {
         console.error(e);
-        err.textContent = 'חיבור נכשל. בדקי את הקוד ונסי שוב.';
+        err.textContent = e?.message || 'חיבור נכשל. בדקי את הקוד ונסי שוב.';
+        err.style.color = 'var(--red)';
         $('#btn-join').disabled = false;
       },
       onMessage: (data) => {
